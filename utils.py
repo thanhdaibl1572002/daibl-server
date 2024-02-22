@@ -1,9 +1,9 @@
 import re
 import string
-import torch
+# import torch
 import pickle
 from unidecode import unidecode
-from transformers import AutoModelForSequenceClassification
+# from transformers import AutoModelForSequenceClassification
 
 clear_pattern = re.compile(
     "["
@@ -87,23 +87,23 @@ def predict_sentiment_svm(text):
     return prediction.tolist()[0]
 
 
-def predict_sentiment_phobert(text):
-    with open("tokenizer.pkl", "rb") as tokenizer_file:
-        tokenizer = pickle.load(tokenizer_file)
-    checkpoint = "mr4/phobert-base-vi-sentiment-analysis"
-    phobert = AutoModelForSequenceClassification.from_pretrained(checkpoint)
-    inputs = tokenizer(text, padding=True, truncation=True, return_tensors="pt")
-    outputs = phobert(**inputs)
-    predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
-    sentiment_values = predictions.detach().numpy()[0]
-    sentiment_dict = {
-        phobert.config.id2label[i]: sentiment_values[i]
-        for i in range(len(sentiment_values))
-    }
-    max_sentiment = max(sentiment_dict, key=sentiment_dict.get)
-    if max_sentiment == "Tích cực":
-        return 1
-    elif max_sentiment == "Tiêu cực":
-        return -1
-    else:
-        return 0
+# def predict_sentiment_phobert(text):
+#     with open("tokenizer.pkl", "rb") as tokenizer_file:
+#         tokenizer = pickle.load(tokenizer_file)
+#     checkpoint = "mr4/phobert-base-vi-sentiment-analysis"
+#     phobert = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+#     inputs = tokenizer(text, padding=True, truncation=True, return_tensors="pt")
+#     outputs = phobert(**inputs)
+#     predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
+#     sentiment_values = predictions.detach().numpy()[0]
+#     sentiment_dict = {
+#         phobert.config.id2label[i]: sentiment_values[i]
+#         for i in range(len(sentiment_values))
+#     }
+#     max_sentiment = max(sentiment_dict, key=sentiment_dict.get)
+#     if max_sentiment == "Tích cực":
+#         return 1
+#     elif max_sentiment == "Tiêu cực":
+#         return -1
+#     else:
+#         return 0
