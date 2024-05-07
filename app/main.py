@@ -5,19 +5,19 @@ from utils import is_vietnamese, predict_sentiment, predict_credit
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/sentiment", methods=["POST"])
+@app.route('/sentiment', methods=['POST'])
 def sentiment():
     try:
-        comment = request.json.get("comment", "")
+        comment = request.json.get('comment', '')
         if is_vietnamese(comment):
             return jsonify(predict_sentiment(comment))
         else:
             return jsonify(-2)
 
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({'error': str(e)})
     
-@app.route("/credit", methods=["POST"])
+@app.route('/credit', methods=['POST'])
 def credit():
     try:
         code_gender = request.json.get('CODE_GENDER')
@@ -41,9 +41,9 @@ def credit():
         prediction = predict_credit(code_gender, flag_own_car, flag_own_realty, cnt_children, amt_income_total, name_income_type, name_education_type, name_family_status, name_housing_type, days_birth, days_employed, flag_work_phone, flag_phone, flag_email, occupation_type, cnt_fam_members, months_balance)
         
         return jsonify(prediction) 
-
-    except Exception as e:
-        return jsonify({"error": str(e)})
     
-if __name__ == "__main__":
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+if __name__ == '__main__':
     app.run(debug=True)
